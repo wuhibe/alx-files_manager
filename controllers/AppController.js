@@ -1,11 +1,13 @@
-/* eslint-disable class-methods-use-this */
+import { promisify } from 'util';
 import dbClient from '../utils/db';
 import redisClient from '../utils/redis';
 
 export default class AppController {
   static async getStats() {
-    const users = await dbClient.nbUsers();
-    const files = await dbClient.nbFiles();
+    this.getUser = promisify(dbClient.nbUsers);
+    this.getFile = promisify(dbClient.nbFiles);
+    const users = await this.getUser();
+    const files = await this.getFile();
     return ({ users, files });
   }
 
