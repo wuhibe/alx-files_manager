@@ -1,13 +1,10 @@
-import { promisify } from 'util';
 import dbClient from '../utils/db';
 import redisClient from '../utils/redis';
 
 export default class AppController {
   static async getStats() {
-    this.getUser = promisify(dbClient.nbUsers);
-    this.getFile = promisify(dbClient.nbFiles);
-    const users = await this.getUser();
-    const files = await this.getFile();
+    const users = await dbClient.nbUsers();
+    const files = await dbClient.nbFiles();
     return ({ users, files });
   }
 
